@@ -41,7 +41,7 @@
     /* 🟡 Overlay Buttons */
    #buttons-container {
   position: absolute;
-  bottom: 10%;
+  bottom: 10%; /* 👈 Raised from 10% to 25% */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -56,6 +56,7 @@
   max-width: 100%;
   padding: 0 1rem;
 }
+
 
 #buttons-container.visible {
   opacity: 1;
@@ -115,6 +116,12 @@
   .img-button {
     width: 50px;
     height: 50px;
+  }
+}
+
+    @media (max-width: 600px) {
+  #buttons-container {
+    bottom: 25%;
   }
 }
   </style>
