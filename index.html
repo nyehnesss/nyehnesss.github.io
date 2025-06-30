@@ -139,7 +139,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;           /* ✅ crop view */
-    transform: scale(0.96);      /* ✅ slightly zoom out */
+    transform: scale(0.76);      /* ✅ slightly zoom out */
     transform-origin: center;
     transition: transform 0.3s ease;
   }
@@ -176,7 +176,7 @@
     const imageButtons = document.querySelectorAll('.img-button');
     const overlay = document.getElementById('start-overlay');
 
-    const interactionPoints = [5, 20, 40]; // ⏱ Customize timestamps
+    const interactionPoints = [2, 21, 41, 58, 78, 102, 146]; // ⏱ Customize timestamps
     let currentInteractionIndex = 0;
     let interactionShown = false;
 
