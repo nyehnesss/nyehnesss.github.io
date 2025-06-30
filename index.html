@@ -3,14 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome!</title>
-   <link rel="stylesheet" href="css/layout.css">
+  <title>Interactive Video with Overlay Buttons</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    #app {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #video-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+
+    /* 🟡 Overlay Buttons */
+    #buttons-container {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 10;
+    }
+
+    #buttons-container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .img-button {
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .img-button:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 600px) {
+      .img-button {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* 🔊 Tap to Start Fullscreen Overlay */
+    #start-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      z-index: 9999;
+      cursor: pointer;
+      text-align: center;
+      padding: 2rem;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    #start-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
+
   <div id="app">
 
     <!-- 🔊 Tap to Start Overlay -->
-    <div id="start-overlay">Hello! Click anywhere to start.</div>
+    <div id="start-overlay">🔊 Tap anywhere to start the video with sound</div>
 
     <div id="video-container">
       <video id="mainVideo" playsinline>
@@ -18,15 +113,63 @@
         <source src="img/ell.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-    </div>
 
-    <div id="buttons-container">
-      <img src="img/happy.png" class="img-button" alt="Button 1">
-      <img src="img/neutral.png" class="img-button" alt="Button 2">
-      <img src="img/angry.png" class="img-button" alt="Button 3">
-      <img src="img/sad.png" class="img-button" alt="Button 4">
+      <!-- 🎮 Buttons overlaid on the video -->
+      <div id="buttons-container">
+        <img src="btn1.png" class="img-button" alt="Button 1">
+        <img src="btn2.png" class="img-button" alt="Button 2">
+        <img src="btn3.png" class="img-button" alt="Button 3">
+        <img src="btn4.png" class="img-button" alt="Button 4">
+      </div>
     </div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    const video = document.getElementById('mainVideo');
+    const buttonsContainer = document.getElementById('buttons-container');
+    const imageButtons = document.querySelectorAll('.img-button');
+    const overlay = document.getElementById('start-overlay');
+
+    const interactionPoints = [5, 20, 40]; // ⏱ Customize timestamps
+    let currentInteractionIndex = 0;
+    let interactionShown = false;
+
+    // 🔊 Tap to Start Overlay Logic
+    overlay.addEventListener('click', () => {
+      overlay.classList.add('fade-out');
+      video.muted = false;
+      video.play().catch(err => {
+        console.warn("Video failed to play:", err);
+      });
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 1000); // match fade duration
+    });
+
+    // 🕓 Show buttons at interaction points
+    video.addEventListener('timeupdate', () => {
+      if (currentInteractionIndex >= interactionPoints.length) return;
+
+      const interactionTime = interactionPoints[currentInteractionIndex];
+
+      if (video.currentTime >= interactionTime && !interactionShown) {
+        interactionShown = true;
+        video.pause();
+        buttonsContainer.classList.add('visible');
+      }
+    });
+
+    // 🧠 Resume video on button click
+    imageButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttonsContainer.classList.remove('visible');
+        video.play();
+        interactionShown = false;
+        currentInteractionIndex++;
+      });
+    });
+  </script>
+
 </body>
 </html>
