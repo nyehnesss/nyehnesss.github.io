@@ -138,8 +138,8 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;       /* 👈 show full video without cropping */
-    transform: scale(1.06);    /* 👈 very mild zoom in */
+    object-fit: cover;           /* ✅ crop view */
+    transform: scale(0.96);      /* ✅ slightly zoom out */
     transform-origin: center;
     transition: transform 0.3s ease;
   }
