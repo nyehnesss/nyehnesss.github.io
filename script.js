@@ -3,7 +3,7 @@ const buttonsContainer = document.getElementById('buttons-container');
 const imageButtons = document.querySelectorAll('.img-button');
 const overlay = document.getElementById('start-overlay');
 
-const interactionPoints = [21, 42, 58, 78, 102, 146]; // Timestamps
+const interactionPoints = [21, 41, 58, 78, 102, 146]; // Timestamps
 let currentInteractionIndex = 0;
 let interactionShown = false;
 
