@@ -32,11 +32,11 @@
 }
 
     video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background-color: #000;
-    }
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* default for desktop */
+  background-color: #000;
+}
 
     /* 🟡 Overlay Buttons */
    #buttons-container {
@@ -81,10 +81,11 @@
       transform: scale(1.1);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 600px) and (orientation: landscape) {
       .img-button {
         width: 60px;
         height: 60px;
+        object-fit: cover; /* Zoom in and crop */
       }
     }
 
